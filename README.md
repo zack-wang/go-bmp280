@@ -9,6 +9,17 @@
 ## Calibration:
 Refer to https://cdn-shop.adafruit.com/datasheets/BST-BMP280-DS001-11.pdf
 
+## Find your device address
+````
+i2cdetect -y 1
+````
+
+## Find BMP280 Device ID, should be 0x58 or 0x56 or 0x57
+````
+i2cget 1 0x76 0xD0
+````
+
+## Sample Code
 ````
 package main
 import(
