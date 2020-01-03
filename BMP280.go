@@ -23,7 +23,7 @@ package bmp280
 
 import (
 	"log"
-  "bytes"
+	"bytes"
 	"encoding/binary"
 	"time"
 	"golang.org/x/exp/io/i2c"
@@ -53,23 +53,23 @@ type BMP280COEFF struct {
 	Dig_T3 int16
 	Dig_P1 uint16
 	Dig_P2 int16
-  Dig_P3 int16
-  Dig_P4 int16
-  Dig_P5 int16
-  Dig_P6 int16
-  Dig_P7 int16
-  Dig_P8 int16
-  Dig_P9 int16
+	Dig_P3 int16
+	Dig_P4 int16
+	Dig_P5 int16
+	Dig_P6 int16
+	Dig_P7 int16
+	Dig_P8 int16
+	Dig_P9 int16
 }
 
 var (
-  Cal BMP280COEFF
-  //// Private Variables
-  b1=make([]byte,1)
-  b2=make([]byte,2)
+	Cal BMP280COEFF
+	//// Private Variables
+	b1=make([]byte,1)
+	b2=make([]byte,2)
 	b3=make([]byte,3)
-  b4=make([]byte,4)
-  b24=make([]byte,24)
+	b4=make([]byte,4)
+	b24=make([]byte,24)
 )
 
 // Verify BMP280
