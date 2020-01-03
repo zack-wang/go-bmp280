@@ -129,7 +129,7 @@ func getOversamplingRate(accuracy string) byte {
 	}
 }
 
-// readUncompTemprature reads uncompensated temprature from sensor.
+// Read Temprature from ADC.
 func ReadUncompTemprature(d string, a int, accuracy string) (int32, error) {
 	var power byte = 1 // Forced mode
 	osr := getOversamplingRate(accuracy)
@@ -171,7 +171,7 @@ func ReadUncompTemprature(d string, a int, accuracy string) (int32, error) {
 }
 
 
-// readUncompPressure reads atmospheric uncompensated pressure from sensor.
+// Read Pressure from ADC.
 func ReadUncompPressure(d string, a int, accuracy string) (int32, error) {
 	var power byte = 1 // Forced mode
 	osr := getOversamplingRate(accuracy)
@@ -215,8 +215,7 @@ func ReadUncompPressure(d string, a int, accuracy string) (int32, error) {
 }
 
 
-// ReadPressureMult10Pa reads and calculates atmospheric pressure in Pa (Pascal) multiplied by 10.
-// Multiplication approach allow to keep result as integer number.
+// Read Pressure Multple by 10 in unit Pa .
 func ReadPressurePa(d string, a int, accuracy string) (uint32, error) {
 	adc_T, err :=ReadUncompTemprature(d, a, accuracy)
 	if err != nil {
@@ -239,7 +238,7 @@ func ReadPressurePa(d string, a int, accuracy string) (uint32, error) {
 	var2 = (((((adc_T>>4)-(int32(Cal.Dig_T1))) * ((adc_T>>4)-(int32(Cal.Dig_T1)))) >> 12) * (int32(Cal.Dig_T3))) >> 14
 	t_fine = var1 + var2
 	T = (t_fine * 5 + 128) >> 8
-	log.Println("T(finn):",float32(T)/100)
+	log.Println("T (fine)=",float32(T)/100)
 
 	var1 = ((int32(t_fine))>>1)-64000
 	var2 = (((var1>>2) * (var1>>2)) >> 11 ) * (int32(Cal.Dig_P6))
@@ -260,5 +259,6 @@ func ReadPressurePa(d string, a int, accuracy string) (uint32, error) {
 	var1 = ((int32(Cal.Dig_P9)) * (int32((((p>>3)) * (p>>3))>>13)))>>12
 	var2 = ((int32((p>>2))) * (int32(Cal.Dig_P8)))>>13
 	p = uint32(int32(p) + ((var1 + var2 + int32(Cal.Dig_P7)) >> 4))
+	log.Println("Pressure=",p)
 	return p, nil
 }
