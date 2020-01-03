@@ -1,10 +1,10 @@
 ## input:
-d = "/dev/i2c-1"
-a = 0x76 (BMP280 on CJMCU8128 breakout board)
-accuracy = "ULTRA_LOW","LOW","STANDARD","HIGH","ULTRA_HIGH"
+- d = "/dev/i2c-1"
+- a = 0x76 (BMP280 on CJMCU8128 breakout board)
+- accuracy = "ULTRA_LOW","LOW","STANDARD","HIGH","ULTRA_HIGH"
 
 ## output:
-p = uint32 ( pressure in unit Pa )
+- p = uint32 ( pressure in unit Pa )
 
 ## Calibration:
 Refer to https://cdn-shop.adafruit.com/datasheets/BST-BMP280-DS001-11.pdf
