@@ -154,7 +154,7 @@ func ReadUncompTemprature(d string, a int, accuracy string) (int32, error) {
 			}else{
 				b1[0] = b1[0] & 0x8
 				if b1[0] == byte(0){
-					log.Println("Not Busy")
+					//log.Println("Not Busy")
 					break
 				}
 			}
@@ -198,7 +198,7 @@ func ReadUncompPressure(d string, a int, accuracy string) (int32, error) {
 				b1[0] = b1[0] & 0x8
 				//log.Println("Busy flag=", b1[0])
 				if b1[0] == 0{
-					log.Println("Not Busy")
+					//log.Println("Not Busy")
 					break
 				}
 			}
@@ -225,20 +225,21 @@ func ReadPressurePa(d string, a int, accuracy string) (uint32, error) {
 	if err != nil {
 		return 0, err
 	}
-	log.Println("T_ADC=",adc_T,", P_ADC=", adc_P)
+	//log.Println("T_ADC=",adc_T,", P_ADC=", adc_P)
 
 	err = ReadCoeff(d,a)
 	if err != nil {
 		return 0, err
 	}
-	log.Println("Calibration Coeff=",Cal)
-	var var1, var2, T, t_fine int32
+	//log.Println("Calibration Coeff=",Cal)
+	//var T int32
+	var var1, var2, t_fine int32
 	var p uint32
 	var1 = ((((adc_T>>3)-(int32(Cal.Dig_T1)<<1))) * (int32(Cal.Dig_T2))) >> 11
 	var2 = (((((adc_T>>4)-(int32(Cal.Dig_T1))) * ((adc_T>>4)-(int32(Cal.Dig_T1)))) >> 12) * (int32(Cal.Dig_T3))) >> 14
 	t_fine = var1 + var2
-	T = (t_fine * 5 + 128) >> 8
-	log.Println("T (fine)=",float32(T)/100)
+	// T = (t_fine * 5 + 128) >> 8
+	//log.Println("T (fine)=",float32(T)/100)
 
 	var1 = ((int32(t_fine))>>1)-64000
 	var2 = (((var1>>2) * (var1>>2)) >> 11 ) * (int32(Cal.Dig_P6))
@@ -249,7 +250,7 @@ func ReadPressurePa(d string, a int, accuracy string) (uint32, error) {
 	if var1 == 0	{
 		return 0,nil // avoid exception caused by division by zero
 	}
-	// p = ( ( (BMP280_U32_t)  (  ((BMP280_S32_t)1048576)-adc_P ) - (var2>>12) )  )*3125;
+
 	p = uint32(3125) * uint32( (1048576-adc_P)-(var2>>12) )
 	if p < 0x80000000	{
 		p = (p << 1) / (uint32(var1))
@@ -259,6 +260,6 @@ func ReadPressurePa(d string, a int, accuracy string) (uint32, error) {
 	var1 = ((int32(Cal.Dig_P9)) * (int32((((p>>3)) * (p>>3))>>13)))>>12
 	var2 = ((int32((p>>2))) * (int32(Cal.Dig_P8)))>>13
 	p = uint32(int32(p) + ((var1 + var2 + int32(Cal.Dig_P7)) >> 4))
-	log.Println("Pressure=",p)
+	//log.Println("Pressure=",p)
 	return p, nil
 }
